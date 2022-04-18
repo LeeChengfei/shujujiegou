@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 )
 
 type NodeList struct {
@@ -46,6 +47,28 @@ func (n *NodeList) Add2(newNode *NodeList) error {
 	return nil
 }
 
+//删除单链表某个节点
+func (n *NodeList) Remove(id int) error {
+	flag := false
+	//找到要删除的节点
+	for {
+		if n.Next == nil {
+			break
+		}
+		if n.Next.Node == id {
+			flag = true
+			break
+		}
+		n = n.Next
+	}
+	if flag {
+		n.Next = n.Next.Next
+	} else {
+		return errors.New("要删除的节点不存在")
+	}
+	return nil
+}
+
 func main() {
 	//定义头节点
 	head := &NodeList{
@@ -55,9 +78,13 @@ func main() {
 		Node: 2,
 	}
 	n2 := &NodeList{
-		Node: 2,
+		Node: 3,
 	}
 	head.Add(n1)
 	head.Add(n2)
-
+	err := head.Remove(2)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
